@@ -5,8 +5,13 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
 
-        String miApiKey = "API_KEY"; // como variable de entorno
-        MishiClient mishi = new MishiClient(miApiKey);
+        String apiKey = MishiConfig.getApiKey();
+        if (apiKey == null) {
+            System.out.println("Por favor, configura tu config.properties");
+            return;
+        }
+
+        MishiClient mishi = new MishiClient(apiKey);
 
         try {
             System.out.println("Mishi Mentor pensando... 🐾");
