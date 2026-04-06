@@ -1,5 +1,7 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,27 +9,46 @@ import java.nio.file.Paths;
 
 public class MishiVault {
 
-    // Usamos un nombre oculto (.mishi_vault) para que sea más "hacker"
     private static final String VAULT_NAME = ".mishi_vault";
+    private final ObjectMapper mapper;
+
+    public MishiVault() {
+        this.mapper = new ObjectMapper();
+        // Esto hace que el JSON se guarde "bonito" (con sangría)
+        this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
 
     public Path getVaultPath() {
-        // System.getProperty("user.home") es perfecto y profesional
-        String home = System.getProperty("user.home");
-        return Paths.get(home, VAULT_NAME);
+        return Paths.get(System.getProperty("user.home"), VAULT_NAME);
     }
 
     public void initVault() {
-        Path rutaVault = getVaultPath();
-
         try {
-            if (Files.notExists(rutaVault)) {
-                Files.createDirectory(rutaVault);
-                System.out.println("🐾 Mishi: He cavado un agujero seguro en: " + rutaVault);
-            } else {
-                System.out.println("🐾 Mishi: El baúl ya existe. (Ronroneo de satisfacción)");
+            Path ruta = getVaultPath();
+            if (Files.notExists(ruta)) {
+                Files.createDirectory(ruta);
             }
         } catch (IOException e) {
-            System.err.println("¡Miau! No pude crear el baúl: " + e.getMessage());
+            System.err.println("Error al inicializar el baúl: " + e.getMessage());
+        }
+    }
+
+    // --- EL CORAZÓN DE LA MEMORIA ---
+    public void guardarNodo(MishiNode nodo) {
+        // 1. Definir el nombre del archivo (usando el ID del nodo)
+        String nombreArchivo = nodo.getId() + ".json";
+        Path rutaArchivo = getVaultPath().resolve(nombreArchivo);
+
+        try {
+            // 2. Convertir el objeto MishiNode a un String JSON
+            String jsonGatuno = mapper.writeValueAsString(nodo);
+
+            // 3. Escribir el archivo (Java 11+ permite hacerlo en una línea)
+            Files.writeString(rutaArchivo, jsonGatuno);
+
+            System.out.println("🐾 Mishi: Recuerdo guardado con éxito en: " + nombreArchivo);
+        } catch (IOException e) {
+            System.err.println("¡Miau! Se me escapó el ovillo al guardar: " + e.getMessage());
         }
     }
 }

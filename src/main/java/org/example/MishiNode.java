@@ -64,14 +64,5 @@ public class MishiNode {
         this.timestamp = timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "MishiNode{" +
-                "id='" + id + '\'' +
-                ", parentId='" + parentId + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", verdict='" + verdict + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
-    }
+    public record Part(String text) {}
 }
