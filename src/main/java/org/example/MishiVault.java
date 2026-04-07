@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MishiVault {
 
@@ -50,5 +54,28 @@ public class MishiVault {
         } catch (IOException e) {
             System.err.println("¡Miau! Se me escapó el ovillo al guardar: " + e.getMessage());
         }
+    }
+
+    public List<MishiNode> obtenerTodosLosRecuerdos() {
+        List<MishiNode> recuerdos = new ArrayList<>();
+
+        try (Stream<Path> archivos = Files.list(getVaultPath())) {
+            archivos.filter(p -> p.toString().endsWith(".json"))
+                    .forEach(p -> {
+                        try {
+                            // Jackson hace la magia inversa: Archivo -> Objeto
+                            MishiNode nodo = mapper.readValue(p.toFile(), MishiNode.class);
+                            recuerdos.add(nodo);
+                        } catch (IOException e) {
+                            System.err.println("¡Miau! Ignorando archivo corrupto: " + p.getFileName());
+                        }
+                    });
+        } catch (IOException e) {
+            System.err.println("No pude abrir el baúl: " + e.getMessage());
+        }
+
+        // Los ordenamos por fecha (el más nuevo primero)
+        recuerdos.sort((n1, n2) -> Long.compare(n2.getTimestamp(), n1.getTimestamp()));
+        return recuerdos;
     }
 }

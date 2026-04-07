@@ -1,5 +1,7 @@
 package org.example;
 
+import javax.swing.*;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
@@ -14,4 +16,5 @@ public class MishiScanner {
             return "¡Miau! No pude leer el archivo: " + e.getMessage();
         }
     }
+
 }
