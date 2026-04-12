@@ -10,7 +10,7 @@ public class MishiConsole {
     private static final String RESET = "\u001B[00m";
     static final String VERDE = "\u001B[32m";
     static final String ROJO = "\u001B[31m";
-    private static final String AMARILLO = "\u001B[33m";
+    static final String AMARILLO = "\u001B[33m";
     private static final String CIAN = "\u001B[36m";
 
     private final Scanner scanner = new Scanner(System.in);

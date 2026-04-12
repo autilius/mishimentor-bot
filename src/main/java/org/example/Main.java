@@ -1,10 +1,13 @@
 package org.example;
 
+import org.example.brains.GeminiBrain;
+import org.example.brains.MishiBrain;
+import org.example.brains.MockBrain;
+
 import java.util.List;
 
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.Constants.RESET;
-import static org.example.MishiConsole.ROJO;
-import static org.example.MishiConsole.VERDE;
+import static org.example.MishiConsole.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,6 +18,20 @@ public class Main {
         String apiKey = MishiConfig.getApiKey();
         String promptKey = MishiConfig.getSystemPrompt();
         MishiClient mishi = new MishiClient(apiKey, promptKey);
+
+        MishiBrain cerebroActual;
+
+        // El Mishi decide su nivel de inteligencia basado en su salud
+        if (MishiHealth.hayInternet() && MishiHealth.tenemosCreditos()) {
+            System.out.println(VERDE + "🐾 Mishi: Conectado a la red neuronal global." + RESET);
+            cerebroActual = new GeminiBrain(apiKey, promptKey);
+        } else {
+            System.out.println(AMARILLO + "🐾 Mishi: Entrando en modo ahorro/local. (Sin internet o sin créditos)" + RESET);
+            cerebroActual = new MockBrain();
+        }
+
+// Ahora, el resto del programa usa 'cerebroActual' sin importar cuál sea
+        ui.escribirLento("Usando el cerebro: " + cerebroActual.getNombreModelo() + "\n", 30);
 
         ui.mostrarBienvenida();
         boolean ejecutando = true;
