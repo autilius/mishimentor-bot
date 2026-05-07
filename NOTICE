@@ -1,0 +1,8 @@
+Mishi Mentor v2.0
+Copyright 2026 Salvador (Autilius) Granados Godínez
+
+This product includes software developed by Salvador Granados Gosínez
+and utilizes the following libraries:
+- Jackson (JSON processing)
+- OpenPDF (PDF generation)
+- Google Gemini API (AI Orchestration)
