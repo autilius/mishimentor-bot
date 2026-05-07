@@ -6,25 +6,34 @@ import java.util.Properties;
 
 public class MishiConfig {
 
-    public static String getApiKey() {
-        Properties prop = new Properties();
+    private static final Properties prop = new Properties();
+
+    // Este bloque se ejecuta una sola vez cuando la clase se carga en memoria
+    static {
         try (FileInputStream input = new FileInputStream("config.properties")) {
             prop.load(input);
-            return prop.getProperty("mishi.api.key");
         } catch (IOException ex) {
-            System.err.println("¡Miau! No encontré el archivoconfig.properties");
-            return null;
+            System.err.println("¡Miau! No encontré el archivo config.properties. El Mishi está operando a ciegas.");
         }
     }
 
+    public static String getApiKeyGemini() {
+        return prop.getProperty("gemini.api.key");
+    }
+
+    public static String getUrlGemini() {
+        return prop.getProperty("gemini.api.url");
+    }
+
+    public static String getApiKeyTavily() {
+        return prop.getProperty("tavily.api.key");
+    }
+
+    public static String getUrlTavily() {
+        return prop.getProperty("tavily.api.url");
+    }
+
     public static String getSystemPrompt() {
-        Properties prop = new Properties();
-        try (FileInputStream input = new FileInputStream("config.properties")) {
-            prop.load(input);
-            return prop.getProperty("mishi.system.prompt");
-        } catch (IOException e) {
-            System.err.println("¡Miau! No encontré el archivoconfig.properties");
-            return null;
-        }
+        return prop.getProperty("mishi.system.prompt");
     }
 }

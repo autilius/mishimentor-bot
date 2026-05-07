@@ -12,34 +12,40 @@ import java.util.List;
 
 public class MishiClient {
 
-    // Cambiamos a v1beta para soporte total de system_instruction
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?";
+    private final String apiKey;
+    private final String url;
     private static final String HEADER_KEY = "x-goog-api-key";
 
-    private final String apiKey;
-    private final String systemPrompt;
-    private final HttpClient client;
     private final ObjectMapper mapper;
+    private final HttpClient client; // Lo hacemos final para seguridad
 
-    public MishiClient(String apiKey, String systemPrompt) {
-        this.apiKey = apiKey;
-        this.systemPrompt = systemPrompt;
-        this.client = HttpClient.newHttpClient();
+    public MishiClient() {
+        this.apiKey = MishiConfig.getApiKeyGemini();
+        this.url = MishiConfig.getUrlGemini();
         this.mapper = new ObjectMapper();
+
+        // ✅ SOLUCIÓN 2: Inicializar el cliente
+        this.client = HttpClient.newHttpClient();
+
+        if (this.apiKey == null || this.url == null) {
+            System.err.println("⚠️ Error: Faltan credenciales en config.properties");
+        }
     }
 
     public String enviarMiau(String mensajeUsuario) throws IOException, InterruptedException {
 
-        GeminiRequest requestPayload = new GeminiRequest(this.systemPrompt, mensajeUsuario);
+        GeminiRequest requestPayload = new GeminiRequest(MishiConfig.getSystemPrompt(), mensajeUsuario);
         String jsonBody = mapper.writeValueAsString(requestPayload);
 
+        // ✅ SOLUCIÓN 1: Usar 'url' aquí, NO 'apiKey'
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_URL))
+                .uri(URI.create(this.url))
                 .header("Content-Type", "application/json")
-                .header(HEADER_KEY, apiKey)
+                .header(HEADER_KEY, this.apiKey) // La llave va en el encabezado, no en la URL
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                 .build();
 
+        // Ahora 'client' ya no es null, enviará el paquete con éxito
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         var rootNode = mapper.readTree(response.body());
@@ -52,7 +58,6 @@ public class MishiClient {
                 .path("content").path("parts").path(0)
                 .path("text").asText();
     }
-
     // --- Clases estándar (POJOs) para máxima compatibilidad ---
 
     public static class GeminiRequest {

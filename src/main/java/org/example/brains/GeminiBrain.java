@@ -4,19 +4,24 @@ import org.example.MishiClient;
 import java.io.IOException;
 
 public class GeminiBrain implements MishiBrain {
+
+    // El guardia estricto (final)
     private final MishiClient client;
+        // Constructor vacío que soluciona el problema
+    public GeminiBrain() {
+            // Inicializamos el cliente aquí mismo.
+            // Como MishiClient ya usa MishiConfig internamente, todo fluye.
+            this.client = new MishiClient();
+        }
 
-    public GeminiBrain(String apiKey, String systemPrompt) {
-        this.client = new MishiClient(apiKey, systemPrompt);
-    }
-
-    @Override
-    public String pensar(String peticion) throws IOException, InterruptedException {
-        return client.enviarMiau(peticion);
-    }
+        @Override
+        public String pensar(String prompt) throws IOException, InterruptedException {
+            // Tu lógica de envío a Gemini...
+            return client.enviarMiau(prompt);
+        }
 
     @Override
     public String getNombreModelo() {
-        return "Google Gemini 1.5 Flash";
+        return "";
     }
 }
