@@ -1,57 +1,241 @@
-🛡️ Mishi Mentor v2.0
-Auditoría Técnica de Java con Elegancia Felina.
+# 🐈 Mishi Mentor v2.0 Auditoría Técnica de Java con Elegancia Felina
 
-Mishi Mentor es una herramienta de orquestación diseñada para desarrolladores que buscan elevar la calidad de su código. No solo refactoriza; audita, detecta vulnerabilidades y genera reportes comerciales listos para entregar. Este proyecto representa la evolución técnica hacia la versión 2.0 de la herramienta, enfocada en la automatización de procesos de auditoría.
+![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.0-blue.svg)
+![Licencia](https://img.shields.io/badge/Licencia-APACHE_2.0-green.svg)
+![Plataforma](https://img.shields.io/badge/Plataforma-Linux_Windows_MacOS-orange.svg)
+```
 
-🚀 Características Principales
-MishiVault™: Sistema de persistencia basado en JSON para mantener un historial de auditorías inmutable sin alterar los archivos originales.
+### Uso
 
-Análisis de Seguridad: Identificación de hallazgos (Findings) clasificados por severidad (High, Medium, Low) mediante auditorías técnicas rigurosas.
+1.  Compila el proyecto utilizando Maven: `mvn clean install`.
+2.  Ejecuta la aplicación desde la clase principal `MishiOrchestrator`.
+3.  Sigue las instrucciones de la mishi-consola para seleccionar el archivo a auditar.
+4.  Una vez finalizado el análisis, selecciona el formato de salida deseado (PDF o Markdown).
+5.  Encuentra tus entregables listos en la carpeta `Mishi_Entregables` de tus documentos.
 
-Exportación Multiformato: Generación automática de reportes de gala en PDF y documentación técnica en Markdown a partir de logs en JSON.
+## 🛠️ Estructura del Proyecto
 
-Clean Code Architecture: Construido bajo principios SOLID, patrones de diseño y optimización de rendimiento para garantizar un mantenimiento sencillo y profesional.
+Esta versión 2.0 está estructurada para maximizar la modularidad y el orden:
+*   **MishiVault**: El corazón de la memoria, encargado de la persistencia y recuperación de auditorías.
+*   **MishiOrchestrator**: El cerebro que coordina la interacción entre el usuario, la IA y el sistema de archivos.
+*   **PdfService**: Motor especializado en la transformación de datos JSON a reportes visuales de gala.
+*   **MishiNode**: Modelo de datos robusto que almacena veredictos, código refactorizado y hallazgos de seguridad.
 
-🛠️ Stack Tecnológico
-Lenguaje: Java 17+ (especializado en arquitectura de software y seguridad).
+## 🤝 Contribuciones y Apoyo
 
-Gestión de Datos: Jackson para la serialización y conversión de datos JSON a formatos comerciales.
+Este proyecto es fruto de un esfuerzo constante por mejorar los estándares de desarrollo en Java. Las sugerencias para la futura versión 3.0 son bienvenidas.
 
-Motor de PDF: OpenPDF para la generación de reportes con estética profesional.
+Si encuentras útil esta herramienta y deseas apoyar el desarrollo:
 
-Arquitectura: Modular / Service-Oriented.
+| Plataforma | Enlace |
+| :--- | :--- |
+| **☕¡Entendido perfectamente! Vamos a replicar exactamente la estructura, el tono y el estilo visual de tu README de **Gemini Repo Loader**, pero aplicado a toda la potencia de **Mishi Mentor v2.0**.
 
-📦 Instalación y Uso
-Clonar el repositorio: git clone ...
+Aquí tienes el README listo para copiar y pegar:
 
-Compilar: mvn clean install
+---
 
-Ejecutar: Inicia el MishiOrchestrator y sigue las instrucciones de la mishi-consola.
+# 🛡️ Mishi Mentor: Tu Auditor Técnico en Java Potenciado por IA
 
-📂 Estructura del Reporte
-Cada auditoría genera un objeto MishiNode que actúa como contenedor de la información recuperada para el motor de reportes e incluye:
+Mishi Mentor es un orquestador potente y elegante diseñado para elevar la calidad de tu código Java a estándares profesionales. Esta herramienta no solo refactoriza; audita vulnerabilidades, detecta fallos de seguridad y genera reportes comerciales listos para entregar, conectando la lógica de negocio con la inteligencia de Gemini.
 
-Verdict: El análisis cualitativo y veredicto de la auditoría.
+## ✨ Características Principales
 
-Refactored Code: El código optimizado y limpio siguiendo los más altos estándares de desarrollo.
+*   **MishiVault™**: Sistema de persistencia basado en JSON que permite mantener un historial de auditorías inmutable y organizado.
+*   **Análisis de Seguridad**: Identificación y clasificación de hallazgos (*findings*) según su severidad (High, Medium, Low).
+*   **Exportación Multiformato**: Generación automática de reportes de gala en PDF para clientes y documentación técnica detallada en Markdown.
+*   **Clean Code Architecture**: Desarrollado bajo principios SOLID y patrones de diseño para garantizar un sistema escalable y profesional.
 
-Security Findings: Lista detallada de riesgos y vulnerabilidades detectadas.
+## 💡 Casos de Uso
 
-⚙️ Configuración (config.properties)
-El sistema requiere de una configuración externa para gestionar las llaves de API y los prompts de sistema que definen el comportamiento de la IA durante la auditoría.
+Mishi Mentor te permite profesionalizar tu flujo de trabajo como desarrollador o auditor:
+*   **Auditorías de Código**: Detecta fallos lógicos y vulnerabilidades de seguridad de forma automatizada.
+*   **Refactorización Senior**: Obtén sugerencias de código optimizadas y alineadas con los estándares de la industria.
+*   **Entregables Profesionales**: Genera reportes PDF de alta calidad para tus servicios de consultoría o freelance.
+*   **Gestión de Portafolio**: Mantén un registro histórico de todas tus intervenciones y mejoras de código en el tiempo.
 
-Properties
-# Credenciales de API
-gemini.api.key=TuApiKeyGemini
-gemini.api.url=TuUrlGemini
-tavily.api.key=TuApiKeyTavily
-tavily.api.url=TuUrlTavily
+## 🚀 Instalación y Uso (Versión 2.0)
 
-# Zona de Prompts generales
+### Configuración Inicial
 
-# Prompt principal de la aplicación (System Prompt)
-mishi.system.prompt=Aquí va tu prompt de sistema
+Dado que esta herramienta utiliza orquestación de IA y servicios externos, la configuración es fundamental:
+1.  Clona este repositorio en tu máquina local.
+2.  Crea un archivo llamado `config.properties` en la raíz del proyecto.
+3.  Configura tus credenciales y prompts:
+    ```properties
+    gemini.api.key=TuApiKeyGemini
+    gemini.api.url=TuUrlGemini
+    tavily.api.key=TuApiKeyTavily
+    tavily.api.url=TuUrlTavily
+    mishi.system.prompt=Tu prompt de sistema personalizado
+    ```
 
-Este proyecto forma parte de un portafolio profesional en GitHub desarrollado por un especialista en Java y seguridad técnica. Para servicios de consultoría, auditorías de proyectos o desarrollo de herramientas a medida, consulte el perfil profesional en Fiverr.
+### Uso
 
-Desarrollado con un enfoque en la monetización de software open-source y calidad técnica.
+1.  Compila el proyecto utilizando Maven: `mvn clean install`.
+2.  Ejecuta la aplicación desde la clase principal `MishiOrchestrator`.
+3.  Sigue las instrucciones de la mishi-consola para seleccionar el archivo a auditar.
+4.  Una vez finalizado el análisis, selecciona el formato de salida deseado (PDF o Markdown).
+5.  Encuentra tus entregables listos en la carpeta `Mishi_Entregables` de tus documentos.
+
+## 🛠️ Estructura del Proyecto
+
+Esta versión 2.0 está estructurada para maximizar la modularidad y el orden:
+*   **MishiVault**: El corazón de la memoria, encargado de la persistencia y recuperación de auditorías.
+*   **MishiOrchestrator**: El cerebro que coordina la interacción entre el usuario, la IA y el sistema de archivos.
+*   **PdfService**: Motor especializado en la transformación de datos JSON a reportes visuales de gala.
+*   **MishiNode**: Modelo de datos robusto que almacena veredictos, código refactorizado y hallazgos de seguridad.
+
+## 🤝 Contribuciones y Apoyo
+
+Este proyecto es fruto de un esfuerzo constante por mejorar los estándares de desarrollo en Java. Las sugerencias para la futura versión 3.0 son bienvenidas.
+
+Si encuentras útil esta herramienta y deseas apoyar el desarrollo:
+
+| Plataforma | Enlace |
+| :--- | :--- |
+| **☕ Cafecito** | [Invitame un café](https://link-aqui) |
+| **📺 YouTube** | [Mi Canal de YouTube](https://youtube.com/...) |
+| **💼 LinkedIn** | [Conectar en LinkedIn](https://linkedin.com/in/...) |
+| **💸 Donar** |¡Entendido perfectamente! Vamos a replicar exactamente la estructura, el tono y el estilo visual de tu README de **Gemini Repo Loader**, pero aplicado a toda la potencia de **Mishi Mentor v2.0**.
+
+Aquí tienes el README listo para copiar y pegar:
+
+---
+
+# 🛡️ Mishi Mentor: Tu Auditor Técnico en Java Potenciado por IA
+
+Mishi Mentor es un orquestador potente y elegante diseñado para elevar la calidad de tu código Java a estándares profesionales. Esta herramienta no solo refactoriza; audita vulnerabilidades, detecta fallos de seguridad y genera reportes comerciales listos para entregar, conectando la lógica de negocio con la inteligencia de Gemini.
+
+## ✨ Características Principales
+
+*   **MishiVault™**: Sistema de persistencia basado en JSON que permite mantener un historial de auditorías inmutable y organizado.
+*   **Análisis de Seguridad**: Identificación y clasificación de hallazgos (*findings*) según su severidad (High, Medium, Low).
+*   **Exportación Multiformato**: Generación automática de reportes de gala en PDF para clientes y documentación técnica detallada en Markdown.
+*   **Clean Code Architecture**: Desarrollado bajo principios SOLID y patrones de diseño para garantizar un sistema escalable y profesional.
+
+## 💡 Casos de Uso
+
+Mishi Mentor te permite profesionalizar tu flujo de trabajo como desarrollador o auditor:
+*   **Auditorías de Código**: Detecta fallos lógicos y vulnerabilidades de seguridad de forma automatizada.
+*   **Refactorización Senior**: Obtén sugerencias de código optimizadas y alineadas con los estándares de la industria.
+*   **Entregables Profesionales**: Genera reportes PDF de alta calidad para tus servicios de consultoría o freelance.
+*   **Gestión de Portafolio**: Mantén un registro histórico de todas tus intervenciones y mejoras de código en el tiempo.
+
+## 🚀 Instalación y Uso (Versión 2.0)
+
+### Configuración Inicial
+
+Dado que esta herramienta utiliza orquestación de IA y servicios externos, la configuración es fundamental:
+1.  Clona este repositorio en tu máquina local.
+2.  Crea un archivo llamado `config.properties` en la raíz del proyecto.
+3.  Configura tus credenciales y prompts:
+    ```properties
+    gemini.api.key=TuApiKeyGemini
+    gemini.api.url=TuUrlGemini
+    tavily.api.key=TuApiKeyTavily
+    tavily.api.url=TuUrlTavily
+    mishi.system.prompt=Tu prompt de sistema personalizado
+    ```
+
+### Uso
+
+1.  Compila el proyecto utilizando Maven: `mvn clean install`.
+2.  Ejecuta la aplicación desde la clase principal `MishiOrchestrator`.
+3.  Sigue las instrucciones de la mishi-consola para seleccionar el archivo a auditar.
+4.  Una vez finalizado el análisis, selecciona el formato de salida deseado (PDF o Markdown).
+5.  Encuentra tus entregables listos en la carpeta `Mishi_Entregables` de tus documentos.
+
+## 🛠️ Estructura del Proyecto
+
+Esta versión 2.0 está estructurada para maximizar la modularidad y el orden:
+*   **MishiVault**: El corazón de la memoria, encargado de la persistencia y recuperación de auditorías.
+*   **MishiOrchestrator**: El cerebro que coordina la interacción entre el usuario, la IA y el sistema de archivos.
+*   **PdfService**: Motor especializado en la transformación de datos JSON a reportes visuales de gala.
+*   **MishiNode**: Modelo de datos robusto que almacena veredictos, código refactorizado y hallazgos de seguridad.
+
+## 🤝 Contribuciones y Apoyo
+
+Este proyecto es fruto de un esfuerzo constante por mejorar los estándares de desarrollo en Java. Las sugerencias para la futura versión 3.0 son bienvenidas.
+
+Si encuentras útil esta herramienta y deseas apoyar el desarrollo:
+
+| Plataforma | Enlace |
+| :--- | :--- |
+| **☕ Cafecito** | [Invitame un café](https://link-aqui) |
+| **📺 YouTube** | [Mi Canal de YouTube](https://youtube.com/...) |
+| **💼 LinkedIn** | [Conectar en LinkedIn](https://linkedin.com/in/...) |
+| **💸 Donar** | [Apoya el Proyecto vía PayPal](https://paypal.me/...) |
+
+**Creado con 💖 por Salvador Granados Godínez (Autilius)**¡Entendido perfectamente! Vamos a replicar exactamente la estructura, el tono y el estilo visual de tu README de **Gemini Repo Loader**, pero aplicado a toda la potencia de **Mishi Mentor v2.0**.
+
+Aquí tienes el README listo para copiar y pegar:
+
+---
+
+# 🛡️ Mishi Mentor: Tu Auditor Técnico en Java Potenciado por IA
+
+Mishi Mentor es un orquestador potente y elegante diseñado para elevar la calidad de tu código Java a estándares profesionales. Esta herramienta no solo refactoriza; audita vulnerabilidades, detecta fallos de seguridad y genera reportes comerciales listos para entregar, conectando la lógica de negocio con la inteligencia de Gemini.
+
+## ✨ Características Principales
+
+*   **MishiVault™**: Sistema de persistencia basado en JSON que permite mantener un historial de auditorías inmutable y organizado.
+*   **Análisis de Seguridad**: Identificación y clasificación de hallazgos (*findings*) según su severidad (High, Medium, Low).
+*   **Exportación Multiformato**: Generación automática de reportes de gala en PDF para clientes y documentación técnica detallada en Markdown.
+*   **Clean Code Architecture**: Desarrollado bajo principios SOLID y patrones de diseño para garantizar un sistema escalable y profesional.
+
+## 💡 Casos de Uso
+
+Mishi Mentor te permite profesionalizar tu flujo de trabajo como desarrollador o auditor:
+*   **Auditorías de Código**: Detecta fallos lógicos y vulnerabilidades de seguridad de forma automatizada.
+*   **Refactorización Senior**: Obtén sugerencias de código optimizadas y alineadas con los estándares de la industria.
+*   **Entregables Profesionales**: Genera reportes PDF de alta calidad para tus servicios de consultoría o freelance.
+*   **Gestión de Portafolio**: Mantén un registro histórico de todas tus intervenciones y mejoras de código en el tiempo.
+
+## 🚀 Instalación y Uso (Versión 2.0)
+
+### Configuración Inicial
+
+Dado que esta herramienta utiliza orquestación de IA y servicios externos, la configuración es fundamental:
+1.  Clona este repositorio en tu máquina local.
+2.  Crea un archivo llamado `config.properties` en la raíz del proyecto.
+3.  Configura tus credenciales y prompts:
+    ```properties
+    gemini.api.key=TuApiKeyGemini
+    gemini.api.url=TuUrlGemini
+    tavily.api.key=TuApiKeyTavily
+    tavily.api.url=TuUrlTavily
+    mishi.system.prompt=Tu prompt de sistema personalizado
+    ```
+
+### Uso
+
+1.  Compila el proyecto utilizando Maven: `mvn clean install`.
+2.  Ejecuta la aplicación desde la clase principal `MishiOrchestrator`.
+3.  Sigue las instrucciones de la mishi-consola para seleccionar el archivo a auditar.
+4.  Una vez finalizado el análisis, selecciona el formato de salida deseado (PDF o Markdown).
+5.  Encuentra tus entregables listos en la carpeta `Mishi_Entregables` de tus documentos.
+
+## 🛠️ Estructura del Proyecto
+
+Esta versión 2.0 está estructurada para maximizar la modularidad y el orden:
+*   **MishiVault**: El corazón de la memoria, encargado de la persistencia y recuperación de auditorías.
+*   **MishiOrchestrator**: El cerebro que coordina la interacción entre el usuario, la IA y el sistema de archivos.
+*   **PdfService**: Motor especializado en la transformación de datos JSON a reportes visuales de gala.
+*   **MishiNode**: Modelo de datos robusto que almacena veredictos, código refactorizado y hallazgos de seguridad.
+
+## 🤝 Contribuciones y Apoyo
+
+Este proyecto es fruto de un esfuerzo constante por mejorar los estándares de desarrollo en Java. Las sugerencias para la futura versión 3.0 son bienvenidas.
+
+Si encuentras útil esta herramienta y deseas apoyar el desarrollo:
+
+| Plataforma | Enlace |
+| :--- | :--- |
+| **☕ Cafecito** | [Invitame un café](https://ko-fi.com/bugotruco) |
+| **📺 YouTube** | [Mi Canal de YouTube](https://www.youtube.com/@Bugotruco) |
+| **💼 LinkedIn** | [Conectar en LinkedIn](https://www.linkedin.com/in/salvador-granados-god%C3%ADnez-699a122aa?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BBxVgb0ErSqOZFFznJ%2Ff0%2FA%3D%3D) |
+| **💸 Donar** | [Apoya el Proyecto vía PayPal](https://www.paypal.com/paypalme/ChavaGranados) |
+
+**Creado con 💖 por Salvador Granados Godínez (Autilius)**
+*Java Developer enfocado en Clean Code, Arquitectura de Software y Seguridad.*
