@@ -1,4 +1,4 @@
-package org.example.model;
+package com.bugotruco.model;
 
 import java.util.List;
 

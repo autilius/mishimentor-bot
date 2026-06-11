@@ -1,4 +1,4 @@
-package org.example;
+package com.bugotruco;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-package org.example.service;
+package com.bugotruco.service;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
-import org.example.model.Finding;
-import org.example.model.MishiReport;
+import com.bugotruco.model.Finding;
+import com.bugotruco.model.MishiReport;
 
 import java.io.FileOutputStream;
 

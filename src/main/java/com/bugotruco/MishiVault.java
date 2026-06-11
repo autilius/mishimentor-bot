@@ -5,27 +5,25 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-package org.example;
+package com.bugotruco;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.example.model.MishiReport;
-import org.example.service.PdfService;
+import com.bugotruco.model.Finding;
+import com.bugotruco.model.MishiReport;
+import com.bugotruco.service.PdfService;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MishiVault {
@@ -36,7 +34,6 @@ public class MishiVault {
 
     public MishiVault() {
         this.mapper = new ObjectMapper();
-        // Esto hace que el JSON se guarde "bonito" (con sangría)
         this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
@@ -44,7 +41,9 @@ public class MishiVault {
         return Paths.get(System.getProperty("user.home"), VAULT_NAME);
     }
 
-    public Path getEntregablePath() { return Paths.get(System.getProperty("user.home"), "Documentos", ENTREGABLE_NAME); }
+    public Path getEntregablePath() {
+        return Paths.get(System.getProperty("user.home"), "Documentos", ENTREGABLE_NAME);
+    }
 
     public void initVault() {
         try {
@@ -61,7 +60,7 @@ public class MishiVault {
         try {
             Path ruta = getEntregablePath();
             if (Files.notExists(ruta)) {
-                Files.createDirectories(ruta); // Usamos 'createDirectories' por si 'Documents' no existe (raro, pero seguro)
+                Files.createDirectories(ruta);
                 System.out.println("📂 [MishiVault] Carpeta de entregables creada en Documentos.");
             }
         } catch (IOException e) {
@@ -69,18 +68,32 @@ public class MishiVault {
         }
     }
 
-    // --- EL CORAZÓN DE LA MEMORIA ---
+    // --- EL CORAZÓN DE LA MEMORIA (OPTIMIZADO v3.0) ---
     public void guardarNodo(MishiNode nodo) {
-        // 1. Definir el nombre del archivo (usando el ID del nodo)
         initVault();
+
+        // 1. RESOLVER LINAJE: Buscar de forma automática el último ID de este archivo para asignarlo como padre
+        try {
+            List<MishiNode> historial = obtenerTodosLosRecuerdos();
+            for (MishiNode recuerdoPasado : historial) {
+                // El primer match que encuentre será el más reciente (gracias al ordenamiento por timestamp de obtenerTodosLosRecuerdos)
+                if (recuerdoPasado.getFileName() != null && recuerdoPasado.getFileName().equals(nodo.getFileName())) {
+                    nodo.setParentId(recuerdoPasado.getId());
+                    System.out.println("🔗 Mishi: Detectado ancestro. Enlazando nuevo nodo al padre: " + recuerdoPasado.getId());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("🐾 Mishi: No se pudo verificar el linaje, se guardará como nodo raíz: " + e.getMessage());
+        }
+
+        // 2. Definir el nombre del archivo final
         String nombreArchivo = nodo.getId() + ".json";
         Path rutaArchivo = getVaultPath().resolve(nombreArchivo);
 
         try {
-            // 2. Convertir el objeto MishiNode a un String JSON
+            // 3. Convertir a String JSON y escribir
             String jsonGatuno = mapper.writeValueAsString(nodo);
-
-            // 3. Escribir el archivo (Java 11+ permite hacerlo en una línea)
             Files.writeString(rutaArchivo, jsonGatuno);
 
             System.out.println("🐾 Mishi: Recuerdo guardado con éxito en: " + nombreArchivo);
@@ -96,7 +109,6 @@ public class MishiVault {
             archivos.filter(p -> p.toString().endsWith(".json"))
                     .forEach(p -> {
                         try {
-                            // Jackson hace la magia inversa: Archivo -> Objeto
                             MishiNode nodo = mapper.readValue(p.toFile(), MishiNode.class);
                             recuerdos.add(nodo);
                         } catch (IOException e) {
@@ -107,77 +119,21 @@ public class MishiVault {
             System.err.println("No pude abrir el baúl: " + e.getMessage());
         }
 
-        // Los ordenamos por fecha (el más nuevo primero)
+        // Orden cronológico inverso (el más nuevo primero) para facilitar la resolución de linajes y búsquedas
         recuerdos.sort((n1, n2) -> Long.compare(n2.getTimestamp(), n1.getTimestamp()));
         return recuerdos;
     }
 
     public List<String> obtenerListaDeReportes() {
         File carpeta = new File(getVaultPath().toUri());
-        String[] archivos = carpeta.list((dir, name) -> name.endsWith(".json")); // O la extensión que uses
+        String[] archivos = carpeta.list((dir, name) -> name.endsWith(".json"));
         return archivos != null ? Arrays.asList(archivos) : new ArrayList<>();
     }
 
-    /**
-     * EXPORTADOR COMERCIAL: Genera el entregable para el cliente.
-     */
-    public void exportarEntregableComercial(String rutaCompletaOriginal, String informe, String refactor) {
-        // 1. Aseguramos que la carpeta exista antes de escribir
-        initEntregables();
-
-        try {
-// 1. EXTRAER SOLO EL NOMBRE (La clave del éxito)
-            // Convertimos la ruta completa en un objeto File para sacar solo el nombre final
-            String soloNombre = new java.io.File(rutaCompletaOriginal).getName();
-
-            // Limpiamos la extensión .java para que no se repita
-            String nombreLimpio = soloNombre.replace(".java", "");
-
-            // 2. Preparamos el nombre final del reporte
-            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new java.util.Date());
-            String nombreArchivo = "Reporte_" + nombreLimpio + "_" + timestamp + ".md";
-
-            // 3. Resolvemos la ruta (Documentos/Mishi_Entregables/Reporte_XYZ.md)
-            Path archivoFinal = getEntregablePath().resolve(nombreArchivo);
-
-            // 4. Construimos el contenido (Markdown)
-            String contenido = String.format("""
-            # 🛡️ INFORME DE AUDITORÍA TÉCNICA - MISHIMENTOR PRO
-            **Archivo:** %s
-            **Fecha:** %s
-            
-            ---
-            ## 🔍 1. ANÁLISIS DE SEGURIDAD
-            %s
-            
-            ---
-            ## 💻 2. CÓDIGO REFACTORIZADO
-            ```java
-            %s
-            ```
-            
-            ---
-            *Generado por MishiMentor v2.0*
-            """, rutaCompletaOriginal, timestamp, informe, refactor);
-
-            // 4. Escribimos el archivo
-            Files.writeString(archivoFinal, contenido);
-
-            System.out.println("\n✨ [DESPACHO EXITOSO]");
-            System.out.println("📍 Ubicación: " + archivoFinal.toAbsolutePath());
-
-        } catch (IOException e) {
-            System.err.println("❌ Error crítico al exportar a Documentos: " + e.getMessage());
-        }
-    }
-
     public MishiNode obtenerRecuerdoPorNombre(String nombreArchivo) {
-        // 1. Construimos la ruta completa al archivo dentro del baúl
         Path rutaArchivo = getVaultPath().resolve(nombreArchivo);
-
         try {
             if (Files.exists(rutaArchivo)) {
-                // 2. Jackson lee el archivo y lo transforma en MishiNode
                 return mapper.readValue(rutaArchivo.toFile(), MishiNode.class);
             } else {
                 System.err.println("¡Miau! El archivo " + nombreArchivo + " no existe.");
@@ -192,23 +148,18 @@ public class MishiVault {
      * GENERADOR DE PDF DE GALA: Mapea el nodo y crea el documento comercial.
      */
     public void generarReportePdf(MishiNode nodo) {
-        // 1. Aseguramos que la carpeta de entregables exista
         initEntregables();
-
         try {
-            // 2. Mapeamos el MishiNode (memoria interna) al MishiReport (modelo comercial)
             MishiReport reporte = new MishiReport();
             reporte.setFileName(nodo.getFileName());
-            reporte.setDate(nodo.getId()); // Usamos el ID como fecha de auditoría
+            reporte.setDate(nodo.getId());
             reporte.setRefactoredCode(nodo.getRefactoredCode());
             reporte.setSecurityFindings(nodo.getSecurityFindings());
 
-            // 3. Preparamos el nombre del archivo y la ruta de salida
             String nombreLimpio = nodo.getFileName().replace(".java", "");
             String nombreArchivoPdf = "Reporte_" + nombreLimpio + "_" + nodo.getId() + ".pdf";
             Path rutaSalida = getEntregablePath().resolve(nombreArchivoPdf);
 
-            // 4. Invocamos al servicio de PDF
             PdfService pdfService = new PdfService();
             pdfService.convertJsonToPdf(reporte, rutaSalida.toString());
 
@@ -220,30 +171,76 @@ public class MishiVault {
         }
     }
 
+    /**
+     * GENERADOR DE MARKDOWN v3.0: Explota la lista estructurada de hallazgos.
+     */
     public void generarReporteMarkdown(MishiNode nodo) {
         initEntregables();
         try {
-            String nombreArchivo = "Reporte_" + nodo.getFileName().replace(".java", "") + "_" + nodo.getId() + ".md";
+            String nombreLimpio = nodo.getFileName().contains(File.separator)
+                    ? new File(nodo.getFileName()).getName().replace(".java", "")
+                    : nodo.getFileName().replace(".java", "");
+
+            String nombreArchivo = "Reporte_" + nombreLimpio + "_" + nodo.getId() + ".md";
             Path archivoFinal = getEntregablePath().resolve(nombreArchivo);
 
-            // Usamos los datos del NODO para construir el texto
+            // Construcción elegante de los hallazgos estructurados
+            StringBuilder sbFindings = new StringBuilder();
+            if (nodo.getSecurityFindings() == null || nodo.getSecurityFindings().isEmpty()) {
+                sbFindings.append("✅ No se detectaron vulnerabilidades críticas en esta ejecución.\n");
+            } else {
+                for (Finding f : nodo.getSecurityFindings()) {
+                    sbFindings.append(String.format("### ⚠️ [%s] %s\n", f.getSeverity(), f.getTitle()));
+                    sbFindings.append(String.format("- **Descripción:** %s\n", f.getDescription()));
+                    sbFindings.append(String.format("- **Línea/Contexto:** %s\n\n", f.getLineContext()));
+                }
+            }
+
             String contenido = String.format("""
-            # 🛡️ AUDITORÍA: %s
-            Fecha: %s
+            # 🛡️ INFORME DE AUDITORÍA TÉCNICA - MISHIMENTOR PRO v3.0
             
-            ## 🔍 HALLAZGOS
+            **Archivo Original:** %s
+            **Identificador de Nodo:** %s
+            **Nodo Padre (Ancetro):** %s
+            
+            ---
+            
+            ## 🔍 1. DICTAMEN DEL AUDITOR (VERDICT)
             %s
             
-            ## 💻 REFACTOR
+            ---
+            
+            ## 🚨 2. MATRIZ DE RIESGOS Y HALLAZGOS DETECTADOS
+            %s
+            
+            ---
+            
+            ## 💻 3. PROPUESTA DE REFACTORIZACIÓN (CLEAN CODE)
             ```java
             %s
             ```
-            """, nodo.getFileName(), nodo.getId(), nodo.getVerdict(), nodo.getRefactoredCode());
+            
+            ---
+            *Reporte automatizado con firma inmutable de auditoría - MishiMentor 2026*
+            """, nodo.getFileName(), nodo.getId(),
+                    (nodo.getParentId() != null ? nodo.getParentId() : "Ninguno (Nodo Raíz)"),
+                    nodo.getVerdict(), sbFindings.toString(), nodo.getRefactoredCode());
 
             Files.writeString(archivoFinal, contenido);
-            System.out.println("✅ Markdown generado en Documentos.");
+            System.out.println("✨ [MARKDOWN DE GALA GENERADO]");
+            System.out.println("📍 Ubicación: " + archivoFinal.toAbsolutePath());
         } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+            System.err.println("Error al exportar Markdown: " + e.getMessage());
         }
+    }
+
+    // Mantenemos este método por compatibilidad con firmas viejas de la v2.0 si las necesitas
+    public void exportarEntregableComercial(String rutaCompletaOriginal, String informe, String refactor) {
+        MishiNode nodoTemporal = new MishiNode(null, rutaCompletaOriginal, informe, refactor);
+        generarReporteMarkdown(nodoTemporal);
+    }
+
+    public void registrarFallo(String rutaArchivo, String errorMsg) {
+
     }
 }

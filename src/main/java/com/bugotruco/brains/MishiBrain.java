@@ -1,4 +1,4 @@
-package org.example.brains;
+package com.bugotruco.brains;
 
 import java.io.IOException;
 

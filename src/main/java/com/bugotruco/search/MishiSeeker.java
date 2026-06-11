@@ -1,4 +1,4 @@
-package org.example.search;
+package com.bugotruco.search;
 
 import java.util.List;
 

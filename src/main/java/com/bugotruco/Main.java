@@ -1,8 +1,4 @@
-package org.example;
-
-import org.example.brains.GeminiBrain;
-import org.example.brains.MishiBrain;
-import org.example.brains.MockBrain;
+package com.bugotruco;
 
 import java.io.IOException;
 

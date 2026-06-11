@@ -1,6 +1,17 @@
-package org.example;
+/*
+ * Copyright 2026 Salvador (Autilius) Granados Godínez
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ */
 
-import org.example.model.Finding; // Importamos tu clase Finding
+
+package com.bugotruco;
+
+import com.bugotruco.model.Finding; // Importamos tu clase Finding
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
