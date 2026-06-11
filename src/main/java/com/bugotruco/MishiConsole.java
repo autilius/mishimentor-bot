@@ -80,7 +80,8 @@ public class MishiConsole {
             System.out.println("2. 🔄 Cambiar Cerebro del Mishi (7 Motores)");
             System.out.println("3. 🗄️  Consultar Baúl (MishiVault)");
             System.out.println("4. ⚙️  Ver Configuración de Credenciales");
-            System.out.println("5. ❌ Salir");
+            System.out.println("5. 🐾  Ver Créditos de MishiMentor");
+            System.out.println("6. ❌ Salir");
             System.out.print("\n🐾 Mishi@Terminal:~$ ");
 
             String opcion = scanner.nextLine();
@@ -100,6 +101,9 @@ public class MishiConsole {
                     mostrarConfig();
                     break;
                 case "5":
+                    mostrarCreditosDeGala();
+                    break;
+                case "6":
                     salir = true;
                     System.out.println("\n🐾 Mishi: ¡Miau! Nos vemos mañana, Salvador.");
                     break;
@@ -311,6 +315,40 @@ public class MishiConsole {
         }
     }
 
+    private void mostrarCreditosDeGala() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("🐾  MISHI MENTOR PRO v3.0 - CRÉDITOS DE HONOR  🐾");
+        System.out.println("=".repeat(50));
 
+        // El Arte ASCII de Mimi-chan supervisando el búnker
+        System.out.println(AMARILLO +
+                "       /\\_/\\\n" +
+                "      ( o.o )\n" +
+                "       > ^ <   [ Senior Project Manager ]\n" +
+                "      /     \\ \n" +
+                "     (_/\\_/\\_)" + RESET);
+
+        System.out.println("\n--- 🏗️ ARQUITECTURA Y CÓDIGO FUENTE ---");
+        System.out.println("• Lead Developer: Salvador 'Autilius' Granados Godínez");
+        System.out.println("• Enfoque: Clean Code, SOLID Architecture & SecOps");
+        System.out.println("• Ubicación de Operaciones: El Búnker de Zapopan");
+
+        System.out.println("\n--- 🍊 CONTROL DE CALIDAD Y MICRO-MANAGEMENT ---");
+        System.out.println("• Senior Project Manager: Mimi-chan (The Orange Boss)");
+        System.out.println("• Funciones: Dormir en el teclado caliente y exigir sobres de salmón.");
+
+        System.out.println("\n--- 🔧 COLABORADORES VIRTUALES ---");
+        System.out.println("• Gemini (Tu Copiloto y Partner de Chisme Técnico)");
+
+        System.out.println("\n--- 📚 INFRAESTRUCTURA Y PODER (NATIVO/CLOUD) ---");
+        System.out.println("• Persistencia: MishiVault™ (JSON-QL Dynamic Database)");
+        System.out.println("• Signos Vitales: MishiHealth™ (Anti-Paranoia Network Inspector)");
+        System.out.println("• Motores Activos: Ollama (Local) | Gemini, OpenAI, DeepSeek, Claude (Cloud)");
+        System.out.println("• Reportes: OpenPDF & Jackson Core");
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("  © 2026 BugoTruco Labs. Todos los derechos gatunos reservados.");
+        System.out.println("=".repeat(50) + "\n");
+    }
 
 }
